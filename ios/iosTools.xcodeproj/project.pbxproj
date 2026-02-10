@@ -1,0 +1,725 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B1000001 /* GalleryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000001; };
+		B1000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000002; };
+		B1000003 /* PhotosTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000003; };
+		B1000004 /* PhotoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000004; };
+		B1000005 /* AlbumsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000005; };
+		B1000006 /* AlbumDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000006; };
+		B1000007 /* PhotoLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000007; };
+		B1000008 /* PhotoPickerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000008; };
+		B1000009 /* FullScreenPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1000009; };
+		B100000A /* AddToAlbumSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F100000A; };
+		B100000B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F100000B; };
+		B2000001 /* HackerNewsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000001; };
+		B2000002 /* HNService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000002; };
+		B2000003 /* HNItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000003; };
+		B2000004 /* HNFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000004; };
+		B2000005 /* HNContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000005; };
+		B2000006 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000006; };
+		B2000007 /* StoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000007; };
+		B2000008 /* CommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000008; };
+		B2000009 /* CommentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2000009; };
+		B200000A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000001; };
+		B200000B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000002; };
+		B200000C /* GlassBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000003; };
+		B200000D /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000004; };
+		B200000E /* HTMLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000005; };
+		B200000F /* TimeAgo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000006; };
+		B2000010 /* FavoriteSubredditsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000007; };
+		B2000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F200000A; };
+		B3000001 /* RedditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3000001; };
+		B3000002 /* RedditContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3000002; };
+		B3000003 /* RedditWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3000003; };
+		B3000004 /* SubredditMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3000004; };
+		B3000005 /* EditFavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3000005; };
+		B3000006 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000001; };
+		B3000007 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000002; };
+		B3000008 /* GlassBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000003; };
+		B3000009 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000004; };
+		B300000A /* HTMLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000005; };
+		B300000B /* TimeAgo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000006; };
+		B300000C /* FavoriteSubredditsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4000007; };
+		B300000D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F300000A; };
+		B300000E /* reddit-inject.css in Resources */ = {isa = PBXBuildFile; fileRef = F300000C; };
+		B300000F /* reddit-inject.js in Resources */ = {isa = PBXBuildFile; fileRef = F300000D; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F1000001 /* GalleryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryApp.swift; sourceTree = "<group>"; };
+		F1000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F1000003 /* PhotosTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTabView.swift; sourceTree = "<group>"; };
+		F1000004 /* PhotoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoThumbnailView.swift; sourceTree = "<group>"; };
+		F1000005 /* AlbumsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsTabView.swift; sourceTree = "<group>"; };
+		F1000006 /* AlbumDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailView.swift; sourceTree = "<group>"; };
+		F1000007 /* PhotoLibraryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryService.swift; sourceTree = "<group>"; };
+		F1000008 /* PhotoPickerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerRepresentable.swift; sourceTree = "<group>"; };
+		F1000009 /* FullScreenPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPhotoView.swift; sourceTree = "<group>"; };
+		F100000A /* AddToAlbumSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToAlbumSheetView.swift; sourceTree = "<group>"; };
+		F100000B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F100000C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F2000001 /* HackerNewsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackerNewsApp.swift; sourceTree = "<group>"; };
+		F2000002 /* HNService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNService.swift; sourceTree = "<group>"; };
+		F2000003 /* HNItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNItem.swift; sourceTree = "<group>"; };
+		F2000004 /* HNFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNFeed.swift; sourceTree = "<group>"; };
+		F2000005 /* HNContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HNContentView.swift; sourceTree = "<group>"; };
+		F2000006 /* FeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedView.swift; sourceTree = "<group>"; };
+		F2000007 /* StoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryRowView.swift; sourceTree = "<group>"; };
+		F2000008 /* CommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsView.swift; sourceTree = "<group>"; };
+		F2000009 /* CommentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRowView.swift; sourceTree = "<group>"; };
+		F200000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F200000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3000001 /* RedditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditApp.swift; sourceTree = "<group>"; };
+		F3000002 /* RedditContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditContentView.swift; sourceTree = "<group>"; };
+		F3000003 /* RedditWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedditWebView.swift; sourceTree = "<group>"; };
+		F3000004 /* SubredditMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubredditMenuView.swift; sourceTree = "<group>"; };
+		F3000005 /* EditFavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFavoritesView.swift; sourceTree = "<group>"; };
+		F300000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F300000B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F300000C /* reddit-inject.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "reddit-inject.css"; sourceTree = "<group>"; };
+		F300000D /* reddit-inject.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "reddit-inject.js"; sourceTree = "<group>"; };
+		F4000001 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		F4000002 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		F4000003 /* GlassBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassBar.swift; sourceTree = "<group>"; };
+		F4000004 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		F4000005 /* HTMLRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLRenderer.swift; sourceTree = "<group>"; };
+		F4000006 /* TimeAgo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeAgo.swift; sourceTree = "<group>"; };
+		F4000007 /* FavoriteSubredditsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteSubredditsStore.swift; sourceTree = "<group>"; };
+		E0000001 /* Gallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0000002 /* HackerNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0000003 /* Reddit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reddit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		60000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60000006 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60000009 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D0000001 = {
+			isa = PBXGroup;
+			children = (
+				D0000002 /* Gallery */,
+				D0000003 /* HackerNews */,
+				D0000006 /* Reddit */,
+				D0000009 /* Shared */,
+				D000000A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0000002 /* Gallery */ = {
+			isa = PBXGroup;
+			children = (
+				F1000001 /* GalleryApp.swift */,
+				F1000002 /* ContentView.swift */,
+				F1000003 /* PhotosTabView.swift */,
+				F1000004 /* PhotoThumbnailView.swift */,
+				F1000005 /* AlbumsTabView.swift */,
+				F1000006 /* AlbumDetailView.swift */,
+				F1000007 /* PhotoLibraryService.swift */,
+				F1000008 /* PhotoPickerRepresentable.swift */,
+				F1000009 /* FullScreenPhotoView.swift */,
+				F100000A /* AddToAlbumSheetView.swift */,
+				F100000B /* Assets.xcassets */,
+				F100000C /* Info.plist */,
+			);
+			path = Gallery;
+			sourceTree = "<group>";
+		};
+		D0000003 /* HackerNews */ = {
+			isa = PBXGroup;
+			children = (
+				F2000001 /* HackerNewsApp.swift */,
+				F2000002 /* HNService.swift */,
+				D0000004 /* Models */,
+				D0000005 /* Views */,
+				F200000A /* Assets.xcassets */,
+				F200000B /* Info.plist */,
+			);
+			path = HackerNews;
+			sourceTree = "<group>";
+		};
+		D0000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F2000003 /* HNItem.swift */,
+				F2000004 /* HNFeed.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D0000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F2000005 /* HNContentView.swift */,
+				F2000006 /* FeedView.swift */,
+				F2000007 /* StoryRowView.swift */,
+				F2000008 /* CommentsView.swift */,
+				F2000009 /* CommentRowView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D0000006 /* Reddit */ = {
+			isa = PBXGroup;
+			children = (
+				F3000001 /* RedditApp.swift */,
+				D0000007 /* Views */,
+				D0000008 /* Resources */,
+				F300000A /* Assets.xcassets */,
+				F300000B /* Info.plist */,
+			);
+			path = Reddit;
+			sourceTree = "<group>";
+		};
+		D0000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F3000002 /* RedditContentView.swift */,
+				F3000003 /* RedditWebView.swift */,
+				F3000004 /* SubredditMenuView.swift */,
+				F3000005 /* EditFavoritesView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D0000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F300000C /* reddit-inject.css */,
+				F300000D /* reddit-inject.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D0000009 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				F4000001 /* Config.swift */,
+				F4000002 /* Theme.swift */,
+				F4000003 /* GlassBar.swift */,
+				F4000004 /* SafariView.swift */,
+				F4000005 /* HTMLRenderer.swift */,
+				F4000006 /* TimeAgo.swift */,
+				F4000007 /* FavoriteSubredditsStore.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		D000000A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E0000001 /* Gallery.app */,
+				E0000002 /* HackerNews.app */,
+				E0000003 /* Reddit.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		50000001 /* Gallery */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80000002 /* Build configuration list for PBXNativeTarget "Gallery" */;
+			buildPhases = (
+				60000001 /* Sources */,
+				60000002 /* Resources */,
+				60000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Gallery;
+			productName = Gallery;
+			productReference = E0000001 /* Gallery.app */;
+			productType = "com.apple.product-type.application";
+		};
+		50000002 /* HackerNews */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80000003 /* Build configuration list for PBXNativeTarget "HackerNews" */;
+			buildPhases = (
+				60000004 /* Sources */,
+				60000005 /* Resources */,
+				60000006 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HackerNews;
+			productName = HackerNews;
+			productReference = E0000002 /* HackerNews.app */;
+			productType = "com.apple.product-type.application";
+		};
+		50000003 /* Reddit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 80000004 /* Build configuration list for PBXNativeTarget "Reddit" */;
+			buildPhases = (
+				60000007 /* Sources */,
+				60000008 /* Resources */,
+				60000009 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Reddit;
+			productName = Reddit;
+			productReference = E0000003 /* Reddit.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		90000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = 80000001 /* Build configuration list for PBXProject "iosTools" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D0000001;
+			productRefGroup = D000000A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				50000001 /* Gallery */,
+				50000002 /* HackerNews */,
+				50000003 /* Reddit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		60000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B100000B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2000011 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B300000D /* Assets.xcassets in Resources */,
+				B300000E /* reddit-inject.css in Resources */,
+				B300000F /* reddit-inject.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		60000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1000001 /* GalleryApp.swift in Sources */,
+				B1000002 /* ContentView.swift in Sources */,
+				B1000003 /* PhotosTabView.swift in Sources */,
+				B1000004 /* PhotoThumbnailView.swift in Sources */,
+				B1000005 /* AlbumsTabView.swift in Sources */,
+				B1000006 /* AlbumDetailView.swift in Sources */,
+				B1000007 /* PhotoLibraryService.swift in Sources */,
+				B1000008 /* PhotoPickerRepresentable.swift in Sources */,
+				B1000009 /* FullScreenPhotoView.swift in Sources */,
+				B100000A /* AddToAlbumSheetView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2000001 /* HackerNewsApp.swift in Sources */,
+				B2000002 /* HNService.swift in Sources */,
+				B2000003 /* HNItem.swift in Sources */,
+				B2000004 /* HNFeed.swift in Sources */,
+				B2000005 /* HNContentView.swift in Sources */,
+				B2000006 /* FeedView.swift in Sources */,
+				B2000007 /* StoryRowView.swift in Sources */,
+				B2000008 /* CommentsView.swift in Sources */,
+				B2000009 /* CommentRowView.swift in Sources */,
+				B200000A /* Config.swift in Sources */,
+				B200000B /* Theme.swift in Sources */,
+				B200000C /* GlassBar.swift in Sources */,
+				B200000D /* SafariView.swift in Sources */,
+				B200000E /* HTMLRenderer.swift in Sources */,
+				B200000F /* TimeAgo.swift in Sources */,
+				B2000010 /* FavoriteSubredditsStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		60000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3000001 /* RedditApp.swift in Sources */,
+				B3000002 /* RedditContentView.swift in Sources */,
+				B3000003 /* RedditWebView.swift in Sources */,
+				B3000004 /* SubredditMenuView.swift in Sources */,
+				B3000005 /* EditFavoritesView.swift in Sources */,
+				B3000006 /* Config.swift in Sources */,
+				B3000007 /* Theme.swift in Sources */,
+				B3000008 /* GlassBar.swift in Sources */,
+				B3000009 /* SafariView.swift in Sources */,
+				B300000A /* HTMLRenderer.swift in Sources */,
+				B300000B /* TimeAgo.swift in Sources */,
+				B300000C /* FavoriteSubredditsStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		70000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		70000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		70000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8LY5574G6L;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Gallery/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gallery-nt.app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		70000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8LY5574G6L;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Gallery/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gallery-nt.app";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		70000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8LY5574G6L;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HackerNews/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gallery-nt.hackernews";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		70000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8LY5574G6L;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = HackerNews/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gallery-nt.hackernews";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		70000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8LY5574G6L;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Reddit/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gallery-nt.reddit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		70000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8LY5574G6L;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Reddit/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gallery-nt.reddit";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		80000001 /* Build configuration list for PBXProject "iosTools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70000001 /* Debug */,
+				70000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80000002 /* Build configuration list for PBXNativeTarget "Gallery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70000003 /* Debug */,
+				70000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80000003 /* Build configuration list for PBXNativeTarget "HackerNews" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70000005 /* Debug */,
+				70000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80000004 /* Build configuration list for PBXNativeTarget "Reddit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				70000007 /* Debug */,
+				70000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 90000001 /* Project object */;
+}
