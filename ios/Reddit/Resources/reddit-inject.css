@@ -593,11 +593,3 @@ img {
     transform: scale(0.92) !important;
 }
 
-/* Back button — bottom left */
-#rn-back-container {
-    position: fixed !important;
-    bottom: 32px !important;
-    left: 16px !important;
-    z-index: 99999 !important;
-    pointer-events: auto !important;
-}

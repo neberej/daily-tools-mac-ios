@@ -401,9 +401,12 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
 
     private func loadImage() {
         spinner.startAnimating()
+        let scale = UIScreen.main.scale
+        let bounds = UIScreen.main.bounds.size
+
         let targetSize = CGSize(
-            width: min(asset.pixelWidth, 1080),
-            height: min(asset.pixelHeight, 1080)
+            width: bounds.width * scale,
+            height: bounds.height * scale
         )
         Task { [weak self] in
             guard let self else { return }

@@ -9,14 +9,13 @@ struct RedditContentView: View {
     @EnvironmentObject var favorites: FavoriteSubredditsStore
     @State private var currentSubreddit: String = ""
     @State private var currentURL: URL
-    @State private var isLoading = false
+    @State private var navigationID = UUID()
     @State private var showSubredditMenu = false
     @State private var navigationTitle = "Reddit"
 
     init() {
-        let initial = AppConfig.Reddit.defaultSubreddits.first ?? "programming"
-        _currentSubreddit = State(initialValue: initial)
-        _currentURL = State(initialValue: URL(string: "\(AppConfig.Reddit.baseURL)/r/\(initial)")!)
+        _currentSubreddit = State(initialValue: "")
+        _currentURL = State(initialValue: URL(string: AppConfig.Reddit.baseURL)!)
     }
 
     var body: some View {
@@ -25,7 +24,7 @@ struct RedditContentView: View {
 
             RedditWebView(
                 url: currentURL,
-                isLoading: $isLoading,
+                navigationID: navigationID,
                 onNavigationTitle: { title in
                     navigationTitle = title
                 }
@@ -58,12 +57,6 @@ struct RedditContentView: View {
                 .buttonStyle(.plain)
 
                 Spacer()
-
-                if isLoading {
-                    ProgressView()
-                        .tint(AppTheme.redditOrange)
-                        .scaleEffect(0.8)
-                }
 
                 // Home button
                 Button {
@@ -101,5 +94,6 @@ struct RedditContentView: View {
         } else {
             currentURL = URL(string: "\(AppConfig.Reddit.baseURL)/r/\(subreddit)")!
         }
+        navigationID = UUID()  // always force a new load
     }
 }

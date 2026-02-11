@@ -1,90 +1,71 @@
-// reddit-inject.js — DOM cleanup, mobile optimizations, and floating nav for old.reddit.com
+// reddit-inject.js — One-pass DOM cleanup at document-end, main-frame only.
+// No MutationObservers, no continuous DOM churn.
 
 (function() {
     'use strict';
 
-    // ===== REMOVE UNWANTED ELEMENTS =====
+    // ===== REMOVE UNWANTED ELEMENTS (one pass) =====
     var selectorsToRemove = [
-        '.side',
-        '.sidebar',
-        '#header',
-        '.footer-parent',
-        '.footer',
-        '.bottommenu',
-        '.debuginfo',
-        '.premium-banner-outer',
-        '.listing-chooser',
-        '.organic-listing',
-        '.promotedlink',
-        '.sponsorshipbox',
-        '.ad-container',
-        '.ad_main',
-        '.goldvertisement',
-        '.infobar',
-        '.login-form-side',
-        '.submit-text',
-        '.morelink',
-        '.sr-bar',
-        '.tabmenu',
-        '.awardings-bar',
+        '.side', '.sidebar', '#header', '.footer-parent', '.footer',
+        '.bottommenu', '.debuginfo', '.premium-banner-outer', '.listing-chooser',
+        '.organic-listing', '.promotedlink', '.sponsorshipbox',
+        '.ad-container', '.ad_main', '.goldvertisement',
+        '.login-form-side', '.submit-text', '.morelink',
+        '.sr-bar', '.tabmenu', '.awardings-bar',
         // Mobile / app banners
-        '.mobile-web-redirect-bar',
-        '#mobile-redirect-bar',
-        '.mobile-web-redirect',
-        '.mobile-banner',
-        '.xpromo-overlay',
-        '.xpromo-modal',
-        '.xpromo-listing',
-        '.xpromo-list-item',
-        '.xpromo-display-bar',
-        '.interstitial-wrapper',
-        '.app-banner',
-        '.native-app-banner',
-        '.infobar-toaster',
-        '.listingsignupbar',
-        '.commentsignupbar',
-        '.below-search-bar-toaster',
-        '.loginpopup',
+        '.mobile-web-redirect-bar', '#mobile-redirect-bar', '.mobile-web-redirect',
+        '.mobile-banner', '.xpromo-overlay', '.xpromo-modal',
+        '.xpromo-listing', '.xpromo-list-item', '.xpromo-display-bar',
+        '.interstitial-wrapper', '.app-banner', '.native-app-banner',
+        '.infobar-toaster', '.listingsignupbar', '.commentsignupbar',
+        '.below-search-bar-toaster', '.loginpopup',
         // Vote columns (read-only)
-        '.midcol',
-        '.midcol-unvoted'
+        '.midcol', '.midcol-unvoted',
+        // Flairs (badge elements only, not post containers)
+        '.flair', '.flair-text', '.linkflairlabel', '.linkflair-text'
     ];
 
-    selectorsToRemove.forEach(function(selector) {
-        document.querySelectorAll(selector).forEach(function(el) {
-            el.remove();
-        });
+    selectorsToRemove.forEach(function(sel) {
+        document.querySelectorAll(sel).forEach(function(el) { el.remove(); });
     });
 
-    // Remove promoted / ad links
+    // Remove promoted posts
     document.querySelectorAll('.link').forEach(function(link) {
-        if (link.classList.contains('promotedlink') ||
-            link.classList.contains('promoted') ||
-            link.querySelector('.promoted-tag')) {
+        if (link.classList.contains('promotedlink') || link.classList.contains('promoted')) {
             link.remove();
         }
     });
 
-    // Aggressively remove ALL subreddit custom stylesheets
-    // Keep only: redditstatic.com core CSS and our own injected styles (marked with REDDIT_INJECT_MARKER)
-    document.querySelectorAll('link[rel="stylesheet"]').forEach(function(link) {
-        var href = (link.href || '').toLowerCase();
-        if (href.indexOf('redditstatic.com') === -1) {
-            link.remove();
-        }
+    // Remove subreddit custom stylesheets (one pass, no observer)
+    document.querySelectorAll('link[rel="stylesheet"]').forEach(function(el) {
+        var href = (el.href || '').toLowerCase();
+        if (href.indexOf('redditstatic.com') === -1) el.remove();
     });
-    document.querySelectorAll('style').forEach(function(style) {
-        var text = style.textContent || '';
-        // Keep our own styles
-        if (text.indexOf('REDDIT_INJECT_MARKER') !== -1) return;
-        // Keep very small inline styles (likely reddit core)
-        if (text.length < 200) return;
-        // Everything else is subreddit theme CSS — remove it
-        style.remove();
+    document.querySelectorAll('style').forEach(function(el) {
+        if (el.id === 'reddit-inject-css') return; // preserve our own injected styles
+        var text = el.textContent || '';
+        if (text.length > 300) el.remove();
     });
 
-    // Remove any element with inline style that sets a background-image (subreddit banners/headers)
-    document.querySelectorAll('#header, #header-img, .pagename, [style*="background-image"]').forEach(function(el) {
+    // Remove vote arrows
+    document.querySelectorAll('.arrow').forEach(function(el) { el.remove(); });
+
+    // Remove flair spans inside comments/taglines
+    document.querySelectorAll('span[class*="flair"]').forEach(function(el) { el.remove(); });
+
+    // Strip action links: keep only comments count on link listings
+    document.querySelectorAll('.link .flat-list').forEach(function(list) {
+        var items = list.querySelectorAll('li');
+        for (var i = 1; i < items.length; i++) items[i].remove();
+    });
+
+    // Strip all action links on comments
+    document.querySelectorAll('.comment .flat-list').forEach(function(list) {
+        list.remove();
+    });
+
+    // Remove background images from subreddit headers
+    document.querySelectorAll('[style*="background-image"]').forEach(function(el) {
         el.style.backgroundImage = 'none';
     });
 
@@ -96,162 +77,48 @@
         content.style.maxWidth = '100%';
     }
 
-    // Remove vote arrows (read-only mode)
-    document.querySelectorAll('.arrow, .midcol .arrow, .midcol, .midcol-unvoted').forEach(function(el) {
-        el.remove();
-    });
-
-    // Remove flair badges (but NOT parent post containers that have linkflair classes)
-    document.querySelectorAll('.flair, .flair-text, .linkflairlabel, .linkflair-text, span[class*="flair"]').forEach(function(el) {
-        el.remove();
-    });
-
-    // Strip action links: keep only comments count on link listings
-    document.querySelectorAll('.link .flat-list').forEach(function(list) {
-        var items = list.querySelectorAll('li');
-        for (var i = 1; i < items.length; i++) {
-            items[i].remove();
-        }
-    });
-
-    // Strip all action links on comments
-    document.querySelectorAll('.comment .flat-list').forEach(function(list) {
-        list.remove();
-    });
-
-    // Leave panestack-title fully visible so sort dropdown works
-
     // ===== FLOATING NAVIGATION BUTTONS =====
-    // Only add if not already present (re-injection protection)
+    // Inline styles guarantee position:fixed even if CSS is stripped or delayed.
+    var floatContainerStyle = 'position:fixed!important;bottom:32px!important;z-index:99999!important;display:flex!important;flex-direction:column!important;gap:10px!important;pointer-events:auto!important;';
+    var floatBtnStyle = 'width:44px!important;height:44px!important;border-radius:50%!important;border:0.5px solid rgba(255,255,255,0.2)!important;background:rgba(30,30,40,0.85)!important;-webkit-backdrop-filter:blur(20px)!important;backdrop-filter:blur(20px)!important;color:#fff!important;font-size:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-shadow:0 4px 12px rgba(0,0,0,0.3)!important;-webkit-tap-highlight-color:transparent!important;padding:0!important;min-height:44px!important;line-height:1!important;';
+
     if (!document.getElementById('rn-float-container')) {
         // Right side: scroll-to-top + next-item
         var container = document.createElement('div');
         container.id = 'rn-float-container';
+        container.setAttribute('style', floatContainerStyle + 'right:16px!important;');
 
-        // Scroll-to-top button
         var topBtn = document.createElement('button');
-        topBtn.className = 'rn-float-btn';
-        topBtn.innerHTML = '&#8593;'; // up arrow
-        topBtn.setAttribute('aria-label', 'Scroll to top');
-        topBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        topBtn.setAttribute('style', floatBtnStyle);
+        topBtn.innerHTML = '&#8593;';
+        topBtn.onclick = function(e) {
+            e.preventDefault(); e.stopPropagation();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        };
 
-        // Next top-level item button
         var nextBtn = document.createElement('button');
-        nextBtn.className = 'rn-float-btn';
-        nextBtn.innerHTML = '&#8595;'; // down arrow
-        nextBtn.setAttribute('aria-label', 'Next item');
-
-        nextBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            var targets;
-            var isCommentPage = !!document.querySelector('.commentarea');
-
-            if (isCommentPage) {
-                var topComments = document.querySelectorAll('.commentarea > .sitetable > .thing.comment');
-                if (topComments.length === 0) {
-                    topComments = document.querySelectorAll('.nestedlisting > .thing.comment');
-                }
-                if (topComments.length === 0) {
-                    topComments = document.querySelectorAll('.comment');
-                }
-                targets = topComments;
-            } else {
-                targets = document.querySelectorAll('.link.thing, .link');
+        nextBtn.setAttribute('style', floatBtnStyle);
+        nextBtn.innerHTML = '&#8595;';
+        nextBtn.onclick = function(e) {
+            e.preventDefault(); e.stopPropagation();
+            var isComments = !!document.querySelector('.commentarea');
+            var targets = isComments
+                ? document.querySelectorAll('.commentarea > .sitetable > .thing.comment')
+                : document.querySelectorAll('.link.thing, .link');
+            if (targets.length === 0 && isComments) {
+                targets = document.querySelectorAll('.comment');
             }
-
-            if (targets.length === 0) return;
-
-            var found = false;
             for (var i = 0; i < targets.length; i++) {
-                var rect = targets[i].getBoundingClientRect();
-                if (rect.top > 80) {
+                if (targets[i].getBoundingClientRect().top > 80) {
                     targets[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    found = true;
-                    break;
+                    return;
                 }
             }
-            if (!found && targets.length > 0) {
-                targets[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
+            if (targets.length > 0) targets[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
 
         container.appendChild(topBtn);
         container.appendChild(nextBtn);
         document.body.appendChild(container);
-
-        // Left side: back button (go back in browser history)
-        var backContainer = document.createElement('div');
-        backContainer.id = 'rn-back-container';
-        var backBtn = document.createElement('button');
-        backBtn.className = 'rn-float-btn';
-        backBtn.innerHTML = '&#8592;'; // left arrow ←
-        backBtn.setAttribute('aria-label', 'Go back');
-        backBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (window.history.length > 1) {
-                window.history.back();
-            }
-        });
-        backContainer.appendChild(backBtn);
-        document.body.appendChild(backContainer);
     }
-
-    // ===== MUTATION OBSERVER =====
-    // Clean dynamically loaded content
-    var observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            mutation.addedNodes.forEach(function(node) {
-                if (node.nodeType === 1) {
-                    // Remove ads in dynamically added content
-                    if (node.classList && (
-                        node.classList.contains('promotedlink') ||
-                        node.classList.contains('ad-container') ||
-                        node.classList.contains('mobile-web-redirect-bar') ||
-                        node.classList.contains('xpromo-overlay') ||
-                        node.classList.contains('xpromo-modal') ||
-                        node.classList.contains('interstitial-wrapper') ||
-                        node.classList.contains('app-banner') ||
-                        node.classList.contains('native-app-banner') ||
-                        node.classList.contains('listingsignupbar') ||
-                        node.classList.contains('loginpopup')
-                    )) {
-                        node.remove();
-                        return;
-                    }
-                    // Remove arrows, midcol, and flairs from new content
-                    if (node.querySelectorAll) {
-                        node.querySelectorAll('.arrow, .midcol, .midcol-unvoted, .flair, .flair-text, .linkflairlabel, .linkflair-text, span[class*="flair"]').forEach(function(el) {
-                            el.remove();
-                        });
-                        // Strip action links on new comments
-                        node.querySelectorAll('.comment .flat-list').forEach(function(list) {
-                            list.remove();
-                        });
-                        // Strip non-comment action links on new posts
-                        node.querySelectorAll('.link .flat-list').forEach(function(list) {
-                            var items = list.querySelectorAll('li');
-                            for (var i = 1; i < items.length; i++) {
-                                items[i].remove();
-                            }
-                        });
-                    }
-                }
-            });
-        });
-    });
-
-    if (document.body) {
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
-
 })();
