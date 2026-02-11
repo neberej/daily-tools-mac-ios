@@ -11,7 +11,7 @@
         '.organic-listing', '.promotedlink', '.sponsorshipbox',
         '.ad-container', '.ad_main', '.goldvertisement',
         '.login-form-side', '.submit-text', '.morelink',
-        '.sr-bar', '.tabmenu', '.awardings-bar',
+        '.sr-bar', '#header .tabmenu', '.awardings-bar',
         // Mobile / app banners
         '.mobile-web-redirect-bar', '#mobile-redirect-bar', '.mobile-web-redirect',
         '.mobile-banner', '.xpromo-overlay', '.xpromo-modal',

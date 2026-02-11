@@ -3,6 +3,22 @@
 /* ===== GLOBAL RESET ===== */
 * {
     box-sizing: border-box !important;
+    border-style: none !important;
+}
+
+/* Re-enable borders we actually want */
+.comment {
+    border-left-style: solid !important;
+}
+.link,
+.titlebox,
+.drop-choices,
+.next-button a,
+.prev-button a,
+textarea,
+input[type="text"],
+input[type="search"] {
+    border-style: solid !important;
 }
 
 html, body {
@@ -120,6 +136,41 @@ body > .content,
     display: none !important;
 }
 
+/* Sort tabs on comment pages (best, new, top, etc.) */
+.commentarea .menuarea .tabmenu,
+.content .tabmenu {
+    display: block !important;
+    visibility: visible !important;
+    background: transparent !important;
+    padding: 4px 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+}
+
+.commentarea .menuarea .tabmenu li,
+.content .tabmenu li {
+    display: inline-block !important;
+    margin-right: 4px !important;
+}
+
+.commentarea .menuarea .tabmenu li a,
+.content .tabmenu li a {
+    color: #999 !important;
+    font-size: 13px !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    background: rgba(255,255,255,0.04) !important;
+}
+
+.commentarea .menuarea .tabmenu li.selected a,
+.content .tabmenu li.selected a {
+    color: #fff !important;
+    background: rgba(255,102,0,0.2) !important;
+    font-weight: 600 !important;
+}
+
 .menuarea .dropdown {
     display: inline-block !important;
     cursor: pointer !important;
@@ -175,6 +226,7 @@ input[type="search"] {
     color: #d0d0d0 !important;
     border-color: rgba(255,255,255,0.08) !important;
     border-radius: 8px !important;
+    padding: 1px !important;
 }
 
 .usertext-body .md p,
@@ -197,7 +249,7 @@ input[type="search"] {
 .premium-banner-outer,
 .listing-chooser,
 .sr-bar,
-.tabmenu,
+#header .tabmenu,
 .morelink,
 .organic-listing,
 .promotedlink,
@@ -321,7 +373,7 @@ body > .content,
     overflow: visible !important;
 }
 
-.link .title a {
+.link .title a:not(.domain a) {
     color: #e8e8e8 !important;
     font-size: 17px !important;
     font-weight: 600 !important;
@@ -329,13 +381,20 @@ body > .content,
     text-decoration: none !important;
 }
 
+.link .title .domain,
+.link .title .domain a {
+    color: #666 !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    line-height: 1.35 !important;
+}
+
 .link .title a:visited {
     color: #888 !important;
 }
 
 .link .domain {
-    color: #666 !important;
-    font-size: 12px !important;
+    vertical-align: baseline !important;
 }
 
 .link .tagline {
@@ -376,9 +435,13 @@ body > .content,
     padding: 4px 0 !important;
 }
 
-/* On comment pages: hide all action buttons on comments */
+/* On comment pages: collapse action buttons on comments (no leftover space) */
 .comment .flat-list {
     display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
 /* Also hide action buttons on the OP post on comment pages */
@@ -411,8 +474,8 @@ body > .content,
 }
 
 .comment {
-    border-left: 2px solid rgba(255,255,255,0.08) !important;
-    padding: 8px 0 8px 12px !important;
+    border-left: 1px solid rgba(255,255,255,0.08) !important;
+    padding: 8px 0 8px 1px !important;
     margin: 0 !important;
     background: transparent !important;
     display: block !important;
@@ -420,7 +483,7 @@ body > .content,
 }
 
 .comment .entry {
-    padding: 4px 0 !important;
+    padding: 4px 2px !important;
     width: auto !important;
 }
 
@@ -439,6 +502,8 @@ body > .content,
     color: #d0d0d0 !important;
     font-size: 15px !important;
     line-height: 1.55 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .comment .md p {

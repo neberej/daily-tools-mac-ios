@@ -17,6 +17,7 @@ struct RedditWebView: UIViewRepresentable {
     let url: URL
     let navigationID: UUID   // changes on every explicit navigation to force load
     var onNavigationTitle: ((String) -> Void)?
+    var onURLChange: ((URL) -> Void)?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -142,6 +143,7 @@ struct RedditWebView: UIViewRepresentable {
             if keyPath == #keyPath(WKWebView.url) {
                 DispatchQueue.main.async { [weak self] in
                     guard let url = webView.url else { return }
+                    self?.parent.onURLChange?(url)
                     let path = url.path
                     if let range = path.range(of: "/r/") {
                         let sub = path[range.upperBound...].split(separator: "/").first.map(String.init) ?? ""
