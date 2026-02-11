@@ -4,14 +4,21 @@
 //
 
 import SwiftUI
+import Photos
 
 struct ContentView: View {
     @State private var selectedTab: Tab = .photos
     @State private var sortNewestFirst: Bool = false
+    @State private var scrollToEdge: ScrollEdge?
 
     enum Tab: String, CaseIterable {
         case photos = "Photos"
         case albums = "Albums"
+        case favorites = "Favorites"
+    }
+
+    enum ScrollEdge {
+        case top, bottom
     }
 
     var body: some View {
@@ -19,7 +26,9 @@ struct ContentView: View {
             Group {
                 switch selectedTab {
                 case .photos:
-                    PhotosTabView(sortNewestFirst: $sortNewestFirst)
+                    PhotosTabView(sortNewestFirst: $sortNewestFirst, scrollToEdge: $scrollToEdge)
+                case .favorites:
+                    FavoritesTabView(sortNewestFirst: $sortNewestFirst)
                 case .albums:
                     AlbumsTabView(sortNewestFirst: $sortNewestFirst)
                 }
@@ -28,7 +37,8 @@ struct ContentView: View {
 
             FloatingBarView(
                 selectedTab: $selectedTab,
-                sortNewestFirst: $sortNewestFirst
+                sortNewestFirst: $sortNewestFirst,
+                scrollToEdge: $scrollToEdge
             )
         }
         .ignoresSafeArea(edges: .bottom)
@@ -38,41 +48,68 @@ struct ContentView: View {
 struct FloatingBarView: View {
     @Binding var selectedTab: ContentView.Tab
     @Binding var sortNewestFirst: Bool
+    @Binding var scrollToEdge: ContentView.ScrollEdge?
+
+    @State private var atBottom = true  // track which end we last scrolled to
 
     var body: some View {
         HStack(spacing: 0) {
-            HStack(spacing: 12) {
+            HStack(spacing: 4) {
                 ForEach(ContentView.Tab.allCases, id: \.self) { tab in
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
                             selectedTab = tab
                         }
                     } label: {
-                        Text(tab.rawValue)
-                            .font(.system(size: 18, weight: .semibold, design: .rounded))
-                            .foregroundStyle(selectedTab == tab ? .primary : .secondary)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
+                        if tab == .favorites {
+                            Image(systemName: selectedTab == .favorites ? "heart.fill" : "heart")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundStyle(selectedTab == .favorites ? .pink : .secondary)
+                                .frame(width: 44, height: 44)
+                        } else {
+                            Text(tab.rawValue)
+                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                .foregroundStyle(selectedTab == tab ? .primary : .secondary)
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 10)
+                        }
                     }
                     .buttonStyle(.plain)
                 }
             }
             .padding(.leading, 8)
 
-            Spacer(minLength: 16)
+            Spacer(minLength: 12)
 
+            // Sort order
             Button {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     sortNewestFirst.toggle()
                 }
             } label: {
-                Image(systemName: sortNewestFirst ? "arrow.down.to.line" : "arrow.up.to.line")
+                Image(systemName: "arrow.up.arrow.down")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.primary)
-                    .frame(width: 44, height: 44)
+                    .frame(width: 40, height: 44)
             }
             .buttonStyle(.plain)
-            .padding(.trailing, 12)
+
+            // Scroll to top / bottom
+            Button {
+                if atBottom {
+                    scrollToEdge = .top
+                } else {
+                    scrollToEdge = .bottom
+                }
+                atBottom.toggle()
+            } label: {
+                Image(systemName: atBottom ? "arrow.up.to.line" : "arrow.down.to.line")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(.primary)
+                    .frame(width: 40, height: 44)
+            }
+            .buttonStyle(.plain)
+            .padding(.trailing, 8)
         }
         .padding(.vertical, 8)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))

@@ -46,8 +46,11 @@ final class PhotoLibraryService: NSObject, ObservableObject, PHPhotoLibraryChang
 
     nonisolated func photoLibraryDidChange(_ changeInstance: PHChange) {
         Task { @MainActor in
-            if allPhotosFetchResult != nil {
+            if let existing = allPhotosFetchResult, let changes = changeInstance.changeDetails(for: existing) {
+                allPhotosFetchResult = changes.fetchResultAfterChanges
                 applyPhotosSortAndPublish()
+            } else if allPhotosFetchResult != nil {
+                performLoadPhotos(sortNewestFirst: currentPhotosSortNewestFirst)
             } else if authorizationStatus == .authorized || authorizationStatus == .limited {
                 performLoadPhotos(sortNewestFirst: currentPhotosSortNewestFirst)
             }
@@ -401,6 +404,20 @@ final class PhotoLibraryService: NSObject, ObservableObject, PHPhotoLibraryChang
     /// Only user-created albums (not smart albums) can be deleted.
     func canDelete(collection: PHAssetCollection) -> Bool {
         collection.assetCollectionType == .album
+    }
+
+    func deleteAsset(_ asset: PHAsset) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            PHPhotoLibrary.shared().performChanges {
+                PHAssetChangeRequest.deleteAssets([asset] as NSArray)
+            } completionHandler: { success, error in
+                if success {
+                    continuation.resume()
+                } else {
+                    continuation.resume(throwing: error ?? NSError(domain: "Gallery", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to delete photo"]))
+                }
+            }
+        }
     }
 
     func deleteAlbum(_ collection: PHAssetCollection) async throws {

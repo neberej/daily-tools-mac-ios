@@ -10,28 +10,40 @@ import Photos
 // MARK: - SwiftUI Shell
 
 struct FullScreenPhotoView: View {
-    let assets: [PHAsset]
-    let initialIndex: Int
+    let initialAssetId: String
     let onDismiss: () -> Void
 
     @EnvironmentObject var library: PhotoLibraryService
-    @State private var currentIndex: Int
+    @State private var currentAssetId: String
     @State private var showControls = true
     @State private var showAddToAlbumSheet = false
     @State private var addToAlbumMessage: String?
     @State private var showToast = false
     @State private var currentImage: UIImage?
 
-    init(assets: [PHAsset], initialIndex: Int, onDismiss: @escaping () -> Void) {
-        self.assets = assets
-        self.initialIndex = min(max(0, initialIndex), max(0, assets.count - 1))
-        self.onDismiss = onDismiss
-        _currentIndex = State(initialValue: min(max(0, initialIndex), max(0, assets.count - 1)))
+    /// For album/favorites contexts: a specific asset list to page through.
+    /// When nil, uses library.allAssets (Photos tab).
+    let scopedAssets: [PHAsset]?
+
+    private var assets: [PHAsset] {
+        scopedAssets ?? library.allAssets
+    }
+
+    private var currentIndex: Int {
+        assets.firstIndex { $0.localIdentifier == currentAssetId } ?? 0
     }
 
     private var displayedAsset: PHAsset? {
-        guard currentIndex >= 0, currentIndex < assets.count else { return nil }
-        return assets[currentIndex]
+        let idx = currentIndex
+        guard idx >= 0, idx < assets.count else { return nil }
+        return assets[idx]
+    }
+
+    init(initialAssetId: String, onDismiss: @escaping () -> Void, scopedAssets: [PHAsset]? = nil) {
+        self.initialAssetId = initialAssetId
+        self.onDismiss = onDismiss
+        self.scopedAssets = scopedAssets
+        _currentAssetId = State(initialValue: initialAssetId)
     }
 
     var body: some View {
@@ -40,16 +52,16 @@ struct FullScreenPhotoView: View {
 
             PagedPhotoViewRepresentable(
                 assets: assets,
-                initialIndex: initialIndex,
+                currentAssetId: currentAssetId,
                 library: library,
-                onPageChanged: { index, image in
-                    currentIndex = index
+                onPageChanged: { assetId, image in
+                    currentAssetId = assetId
                     currentImage = image
                 },
                 onSingleTap: {
                     withAnimation(.easeInOut(duration: 0.2)) { showControls.toggle() }
                 },
-                onDismiss: { onDismiss() }
+                onDismiss: onDismiss
             )
             .ignoresSafeArea()
 
@@ -87,6 +99,17 @@ struct FullScreenPhotoView: View {
                 }
             }
         }
+        .onChange(of: assets) { _, newAssets in
+            // If current asset was deleted, advance to nearest neighbor
+            if !newAssets.contains(where: { $0.localIdentifier == currentAssetId }) {
+                if newAssets.isEmpty {
+                    onDismiss()
+                } else {
+                    let fallback = min(currentIndex, newAssets.count - 1)
+                    currentAssetId = newAssets[fallback].localIdentifier
+                }
+            }
+        }
     }
 
     private func toastView(message: String) -> some View {
@@ -103,7 +126,7 @@ struct FullScreenPhotoView: View {
 
     private var controlsOverlay: some View {
         VStack(spacing: 0) {
-            // Top bar with gradient — buttons are hittable
+            // Top bar with gradient
             HStack {
                 Button("Done") { onDismiss() }
                     .font(.body.weight(.medium))
@@ -150,13 +173,33 @@ struct FullScreenPhotoView: View {
             Spacer()
                 .allowsHitTesting(false)
 
-            // Bottom indicator: non-interactive
-            if assets.count > 1 {
-                Text("\(currentIndex + 1) of \(assets.count)")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.8))
-                    .padding(.bottom, 40)
-                    .allowsHitTesting(false)
+            // Bottom bar: delete button (right-aligned)
+            HStack {
+                Spacer()
+                Button {
+                    deleteCurrentPhoto()
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.85))
+                        .frame(width: 44, height: 44)
+                        .background(.black.opacity(0.4), in: Circle())
+                }
+                .padding(.trailing, 20)
+                .padding(.bottom, 36)
+            }
+        }
+    }
+
+    private func deleteCurrentPhoto() {
+        guard let asset = displayedAsset else { return }
+        Task {
+            do {
+                try await library.deleteAsset(asset)
+                // Don't dismiss — PHChange observer updates assets,
+                // .onChange(of: assets) advances to next photo.
+            } catch {
+                // User cancelled the system dialog — do nothing.
             }
         }
     }
@@ -166,16 +209,17 @@ struct FullScreenPhotoView: View {
 
 struct PagedPhotoViewRepresentable: UIViewControllerRepresentable {
     let assets: [PHAsset]
-    let initialIndex: Int
+    let currentAssetId: String
     let library: PhotoLibraryService
-    let onPageChanged: (Int, UIImage?) -> Void
+    let onPageChanged: (String, UIImage?) -> Void
     let onSingleTap: () -> Void
     let onDismiss: () -> Void
 
     func makeUIViewController(context: Context) -> PagedPhotoPageViewController {
+        let idx = assets.firstIndex { $0.localIdentifier == currentAssetId } ?? 0
         let vc = PagedPhotoPageViewController(
             assets: assets,
-            initialIndex: initialIndex,
+            initialIndex: idx,
             library: library,
             onPageChanged: onPageChanged,
             onSingleTap: onSingleTap,
@@ -184,8 +228,8 @@ struct PagedPhotoViewRepresentable: UIViewControllerRepresentable {
         return vc
     }
 
-    func updateUIViewController(_ uiViewController: PagedPhotoPageViewController, context: Context) {
-        // Static content; nothing to update.
+    func updateUIViewController(_ vc: PagedPhotoPageViewController, context: Context) {
+        vc.updateAssets(assets, currentAssetId: currentAssetId, onPageChanged: onPageChanged)
     }
 }
 
@@ -194,16 +238,15 @@ struct PagedPhotoViewRepresentable: UIViewControllerRepresentable {
 final class PagedPhotoPageViewController: UIPageViewController,
     UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIGestureRecognizerDelegate {
 
-    private let assets: [PHAsset]
+    private var assets: [PHAsset]
     private let library: PhotoLibraryService
-    private let onPageChanged: (Int, UIImage?) -> Void
+    private var onPageChanged: (String, UIImage?) -> Void
     private let onSingleTap: () -> Void
     private let onDismiss: () -> Void
     private var currentIdx: Int
-    private var isDismissing = false
 
     init(assets: [PHAsset], initialIndex: Int, library: PhotoLibraryService,
-         onPageChanged: @escaping (Int, UIImage?) -> Void,
+         onPageChanged: @escaping (String, UIImage?) -> Void,
          onSingleTap: @escaping () -> Void,
          onDismiss: @escaping () -> Void) {
         self.assets = assets
@@ -235,6 +278,18 @@ final class PagedPhotoPageViewController: UIPageViewController,
         view.addGestureRecognizer(pan)
     }
 
+    /// Called from updateUIViewController when assets change (e.g. after delete).
+    func updateAssets(_ newAssets: [PHAsset], currentAssetId: String, onPageChanged: @escaping (String, UIImage?) -> Void) {
+        guard newAssets.map(\.localIdentifier) != assets.map(\.localIdentifier) else { return }
+        self.assets = newAssets
+        self.onPageChanged = onPageChanged
+        guard !newAssets.isEmpty else { return }
+        let newIdx = newAssets.firstIndex { $0.localIdentifier == currentAssetId } ?? min(currentIdx, newAssets.count - 1)
+        currentIdx = newIdx
+        let vc = makeZoomVC(for: currentIdx)
+        setViewControllers([vc], direction: .forward, animated: false)
+    }
+
     // MARK: Swipe down to dismiss
 
     @objc private func handleDismissPan(_ gesture: UIPanGestureRecognizer) {
@@ -251,22 +306,18 @@ final class PagedPhotoPageViewController: UIPageViewController,
         }
     }
 
-    // Only start dismiss pan when dragging downward and not zoomed in
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let pan = gestureRecognizer as? UIPanGestureRecognizer else { return true }
         let velocity = pan.velocity(in: view)
-        // Must be primarily vertical and downward
         guard velocity.y > 0, abs(velocity.y) > abs(velocity.x) * 1.5 else { return false }
-        // Don't allow if current photo is zoomed in
         if let zoomVC = viewControllers?.first as? ZoomablePhotoViewController,
            zoomVC.isZoomed { return false }
         return true
     }
 
-    // Allow simultaneous recognition so page swiping still works
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                            shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool {
-        false // don't fire with page scroll at the same time
+        false
     }
 
     private func makeZoomVC(for index: Int) -> ZoomablePhotoViewController {
@@ -276,8 +327,8 @@ final class PagedPhotoPageViewController: UIPageViewController,
             library: library,
             onSingleTap: onSingleTap,
             onImageLoaded: { [weak self] idx, image in
-                guard let self, idx == self.currentIdx else { return }
-                self.onPageChanged(idx, image)
+                guard let self, idx == self.currentIdx, idx < self.assets.count else { return }
+                self.onPageChanged(self.assets[idx].localIdentifier, image)
             }
         )
     }
@@ -309,7 +360,8 @@ final class PagedPhotoPageViewController: UIPageViewController,
         guard completed,
               let vc = viewControllers?.first as? ZoomablePhotoViewController else { return }
         currentIdx = vc.index
-        onPageChanged(vc.index, vc.loadedImage)
+        guard currentIdx < assets.count else { return }
+        onPageChanged(assets[currentIdx].localIdentifier, vc.loadedImage)
     }
 }
 
@@ -327,7 +379,6 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
     private let spinner = UIActivityIndicatorView(style: .medium)
     private(set) var loadedImage: UIImage?
 
-    /// True when zoomed in past minimum scale (used by dismiss gesture)
     var isZoomed: Bool { scrollView.zoomScale > scrollView.minimumZoomScale + 0.01 }
 
     init(asset: PHAsset, index: Int, library: PhotoLibraryService,
@@ -348,7 +399,6 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         super.viewDidLoad()
         view.backgroundColor = .black
 
-        // Scroll view
         scrollView.delegate = self
         scrollView.minimumZoomScale = 1
         scrollView.maximumZoomScale = 5
@@ -362,12 +412,10 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         scrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(scrollView)
 
-        // Image view
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         scrollView.addSubview(imageView)
 
-        // Spinner
         spinner.color = .white
         spinner.hidesWhenStopped = true
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -377,12 +425,10 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
             spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
 
-        // Double-tap to zoom
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTap.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTap)
 
-        // Single-tap to toggle controls (requires double-tap to fail first)
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
         singleTap.numberOfTapsRequired = 1
         singleTap.require(toFail: doubleTap)
@@ -397,16 +443,11 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         layoutImage(image)
     }
 
-    // MARK: Image loading
-
     private func loadImage() {
         spinner.startAnimating()
-        let scale = UIScreen.main.scale
-        let bounds = UIScreen.main.bounds.size
-
         let targetSize = CGSize(
-            width: bounds.width * scale,
-            height: bounds.height * scale
+            width: min(asset.pixelWidth, 1080),
+            height: min(asset.pixelHeight, 1080)
         )
         Task { [weak self] in
             guard let self else { return }
@@ -427,8 +468,6 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         }
     }
 
-    // MARK: Layout
-
     private func layoutImage(_ image: UIImage) {
         let viewSize = scrollView.bounds.size
         guard viewSize.width > 0, viewSize.height > 0 else { return }
@@ -438,14 +477,13 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         let heightScale = viewSize.height / imageSize.height
         let fitScale = min(widthScale, heightScale)
 
-        // Set imageView to the fitted size at scale 1
         let fittedWidth = imageSize.width * fitScale
         let fittedHeight = imageSize.height * fitScale
         imageView.frame = CGRect(x: 0, y: 0, width: fittedWidth, height: fittedHeight)
         scrollView.contentSize = CGSize(width: fittedWidth, height: fittedHeight)
 
         scrollView.minimumZoomScale = 1
-        scrollView.maximumZoomScale = max(5, 1 / fitScale) // allow zooming to real pixel size
+        scrollView.maximumZoomScale = max(5, 1 / fitScale)
         scrollView.zoomScale = 1
 
         centerImage()
@@ -457,17 +495,8 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         scrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: offsetY, right: offsetX)
     }
 
-    // MARK: UIScrollViewDelegate
-
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
-    }
-
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centerImage()
-    }
-
-    // MARK: Gestures
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? { imageView }
+    func scrollViewDidZoom(_ scrollView: UIScrollView) { centerImage() }
 
     @objc private func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
         if scrollView.zoomScale > scrollView.minimumZoomScale + 0.01 {
@@ -480,9 +509,7 @@ final class ZoomablePhotoViewController: UIViewController, UIScrollViewDelegate 
         }
     }
 
-    @objc private func handleSingleTap() {
-        onSingleTap()
-    }
+    @objc private func handleSingleTap() { onSingleTap() }
 
     private func zoomRect(scale: CGFloat, center: CGPoint) -> CGRect {
         let size = CGSize(

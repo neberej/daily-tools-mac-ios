@@ -138,9 +138,9 @@ struct AlbumDetailView: View {
         )) {
             if let idx = selectedPhotoIndex, !assets.isEmpty, idx >= 0, idx < assets.count {
                 FullScreenPhotoView(
-                    assets: assets,
-                    initialIndex: idx,
-                    onDismiss: { selectedPhotoIndex = nil }
+                    initialAssetId: assets[idx].localIdentifier,
+                    onDismiss: { selectedPhotoIndex = nil },
+                    scopedAssets: assets
                 )
             }
         }
